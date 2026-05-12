@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: grip-dev          # ← dev용 네임스페이스
+
+resources:
+  - ../../base
+
+# Jenkins가 빌드 후 이 줄을 갱신할 곳
+images:
+  - name: localhost:5001/grip-sample
+    newTag: v1

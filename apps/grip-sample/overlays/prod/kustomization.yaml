@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: grip-prod
+
+resources:
+  - ../../base
+
+patches:
+  - path: patch-replicas.yaml
+  - path: patch-resources.yaml
+
+images:
+  - name: localhost:5001/grip-sample
+    newTag: v1

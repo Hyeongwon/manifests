@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grip-sample          # ← Deployment 이름
+  labels:
+    app: grip-sample
+spec:
+  replicas: 2                # ← 몇 개 떠야 하는가
+  selector:
+    matchLabels:
+      app: grip-sample       # ← "이 라벨 붙은 Pod이 내 자식이다"
+  template:                  # ← 자식 Pod의 청사진
+    metadata:
+      labels:
+        app: grip-sample     # ← selector와 *반드시 일치*
+    spec:
+      containers:
+        - name: app
+          image: localhost:5001/grip-sample:v1
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits:   { cpu: 500m, memory: 512Mi }
+          livenessProbe:        # ← "Pod이 살아있나? 죽었으면 재시작"
+            httpGet: { path: /healthz, port: 8080 }
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:       # ← "Pod이 트래픽 받을 준비됐나? 안 됐으면 Service에서 제외"
+            httpGet: { path: /readyz, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 5
