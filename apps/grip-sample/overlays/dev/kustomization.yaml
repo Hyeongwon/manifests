@@ -9,4 +9,4 @@ resources:
 # Jenkins가 빌드 후 이 줄을 갱신할 곳
 images:
   - name: localhost:5001/grip-sample
-    newTag: dfdf59ed
+    newTag: 4e1d4a91
